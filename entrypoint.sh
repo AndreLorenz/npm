@@ -19,4 +19,14 @@ if [ -n "$NPM_AUTH_TOKEN" ]; then
   chmod 0600 "$NPM_CONFIG_USERCONFIG"
 fi
 
+if [ -n "$DEPLOY_KEY" ]; then
+  mkdir -p /root/.ssh
+
+  ssh-keyscan -t rsa github.com > /root/.ssh/known_hosts
+
+  echo "$DEPLOY_KEY" > /root/.ssh/id_rsa
+
+  chmod 400 /root/.ssh/id_rsa
+fi
+
 sh -c "npm $*"
